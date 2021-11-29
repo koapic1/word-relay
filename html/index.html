@@ -18,6 +18,7 @@
                 <span class="main">WORD RELAY</span>
             </h1>
             <!-- <div id="suggestWord"></div> -->
+            <div class="time"></div>
             <div id="writtenWord">
                 <ul></ul>
             </div>
@@ -35,13 +36,27 @@
         const writtenWordArray = []; // 우리가 입력한 글자를 저장하기 위한 빈 배열 includes를 통해 필터링
         const firstWordArray = ["호랑이", "무지개", "개나리", "파라솔", "코알라"]
         const scoreTxt = document.querySelector(".score");
+        const time = document.querySelector(".time")
         let score = 0;
+        let timeCount = 10;
         
         writtenWordArray.push(firstWordArray[Math.floor(Math.random() * firstWordArray.length)]);
         
         writtenWordArray.forEach(function(item,index){
             writtenWord.innerHTML += `<li>${item}</li>`
         })
+
+        time.innerHTML = "Time : " + timeCount;
+        const tick = () => {
+            time.innerHTML = "Time : " + timeCount;
+            if(timeCount === 0) {
+                clearInterval(start);
+                alert("GAME OVER");
+            } else {
+                timeCount -= 1;
+            }
+        };
+        const start = setInterval(tick, 1000);
 
         word.addEventListener("keyup", function(e) {
             if(e.key === "Enter" || e.keyCode === 13) {
@@ -60,11 +75,12 @@
                         writtenWord.innerHTML = "";
                         writtenWordArray.forEach(function(item,index){
                         writtenWord.innerHTML += `<li>${item}</li>`;
+                        timeCount = 5;
                         });
                         word.value = "";
                         word.focus();
                         score++;
-                        scoreTxt.innerHTML = "점수 : " + score;
+                        scoreTxt.innerHTML = "Score : " + score;
                     } else {
                         word.value = "";
                         word.focus();
@@ -77,7 +93,7 @@
                 }
             } 
         });
-        scoreTxt.innerHTML = "점수 : " + score;
+        scoreTxt.innerHTML = "Score : " + score;
         // const fluits = ["apple","banana","kiwi"];
         // console.log(fluits.includes("jamong"))
 
