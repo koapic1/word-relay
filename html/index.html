@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>WORD RELAY</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;700;800;900&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
+        <link rel="stylesheet" href="../css/reset.css" />
+        <link rel="stylesheet" href="../css/layout.css" />
+        <script src="../js/gsap/gsap.min.js"></script>
+    </head>
+    <body>
+        <div class="wrap">
+            <h1>
+                <span class="main">WORD RELAY</span>
+            </h1>
+            <!-- <div id="suggestWord"></div> -->
+            <div id="writtenWord">
+                <ul></ul>
+            </div>
+            <div class="inputBox"><input type="text" id="word"></div>
+    </body>
+    <script>
+        // 1. 주어진 단어의 마지막 글자와 입력하는 글자의 첫글자가 같으면 
+        // 2. suggestWord의 글자는 입력한 글자로 바뀌고
+        // 3. word의 내용은 공백으로 바뀌면서 focus가 가야함
+        // 4. 입력하는 글자는 3글자 이어야 한다. 그렇지 않으면 경고창 띄우기
+        const word = document.querySelector("#word");
+        const writtenWord = document.querySelector("#writtenWord ul");
+        const writtenWordArray = []; // 우리가 입력한 글자를 저장하기 위한 빈 배열 includes를 통해 필터링
+        const firstWordArray = ["호랑이", "무지개", "개나리", "파라솔", "코알라"]
+        
+        writtenWordArray.push(firstWordArray[Math.floor(Math.random() * firstWordArray.length)]);
+        
+        writtenWordArray.forEach(function(item,index){
+            writtenWord.innerHTML += `<li>${item}</li>`
+        })
+
+        word.addEventListener("keyup", function(e) {
+            if(e.key === "Enter" || e.keyCode === 13) {
+                if(word.value.length !== 3){
+                    alert("3글자만 입력 가능합니다")
+                    word.value = "";
+                    word.focus();
+                    return;
+                }
+                const lastWord = writtenWordArray[writtenWordArray.length - 1];
+                const lastCher = lastWord.charAt(lastWord.length - 1);
+                const firstCher = word.value.charAt(0); // word에 입력한 첫번째 글자
+                if(firstCher === lastCher) {
+                    if(!writtenWordArray.includes(word.value)) {
+                        writtenWordArray.push(word.value);
+                        writtenWord.innerHTML = "";
+                        writtenWordArray.forEach(function(item,index){
+                        writtenWord.innerHTML += `<li>${item}</li>`;
+                    });
+                    word.value = "";
+                    word.focus();
+                    } else {
+                        word.value = "";
+                        word.focus();
+                        gsap.fromTo(word, { x: 100 }, { x: 0, ease:"elastic", duration: 0.5 });
+                }
+                } else {
+                    word.value = "";
+                    word.focus();
+                    gsap.fromTo(word, { x: 100 }, { x: 0, ease:"elastic", duration: 0.5 });
+                }
+            } 
+        });
+        //         if(firstCher===lastCher) {
+        //             if(!writtenWordArray.includes(word.value)) {
+        //             writtenWordArray.push(word.value);
+        //             writtenWord.innerHTML = ""
+        //             writtenWordArray.forEach(function(item,index){
+        //                 writtenWord.innerHTML += `<li>${item}</li>`;
+        //             });
+        //             word.value = "";
+        //             word.focus();
+        //             //console.log(writtenWordArray);
+        //             } 
+        //         } else {
+        //             alert("끝 글자와 첫 글자가 동일해야 합니다.")
+        //         }
+        //     }
+        // });
+
+        // const fluits = ["apple","banana","kiwi"];
+        // console.log(fluits.includes("jamong"))
+
+
+    </script>
+</html>
