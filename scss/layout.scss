@@ -14,15 +14,18 @@ body {
     flex-direction: column;
     align-items: center;
     h1 {
-        font-size: 32px;
+        font-size: 48px;
         margin: 100px 0;
         text-align: center;
-        font-weight: 500;
+        font-weight: 600;
         color: #fff;
     }
     #writtenWord {
         ul {
             display: flex;
+            width: 700px;
+            flex-wrap: wrap;
+            justify-content: center;
             li {
                 margin: 5px;
                 background-color: darkred;
@@ -34,24 +37,53 @@ body {
                 padding: 10px 20px;
                 @include longShadow(darken(darkred, 10), right, 30);
                 overflow: hidden;
+                width: 80px;
+                height: 20px;
+                font-size: 18px;
             }
         }
     }
     .inputBox {
         position: fixed;
         width: 100%;
-        bottom: 100px;
+        bottom: 200px;
         display: flex;
         justify-content: center;
     }
     #word {
         border: none;
         background-color: #fff;
-        padding: 20px 50px;
+        padding: 15px 40px;
         font-size: 20px;
         border-radius: 100px;
         overflow: hidden;
         outline: none;
         text-align: center;
+    }
+    .reset {
+        position: fixed;
+        bottom: 100px;
+        padding: 10px 20px;
+        border-radius: 100px;
+        border: none;
+        margin: 5px;
+        background-color: darkred;
+        color: #fff;
+        @include longShadow(darken(darkred, 10), right, 30);
+        overflow: hidden;
+        font-size: 18px;
+        font-weight: 600;
+        transition: 0.25s;
+        &:hover {
+            background-color: #111;
+            @include longShadow(darken(#111, 10), right, 30);
+        }
+    }
+    .score {
+        position: fixed;
+        bottom: 280px;
+        color: #fff;
+        font-size: 18px;
+        border-bottom: 2px solid #fff;
     }
 }
