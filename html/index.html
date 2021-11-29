@@ -24,7 +24,10 @@
             </div>
             <div class="inputBox"><input type="text" id="word"></div>
             <div class="score"></div>
-            <button class="reset" onclick="window.location.reload( )">다시하기</button>
+            <div id="btn">
+                <button class="start">Start</button>
+                <button class="reset" onclick="window.location.reload( )">Try again</button>
+            </div>
     </body>
     <script>
         // 1. 주어진 단어의 마지막 글자와 입력하는 글자의 첫글자가 같으면 
@@ -39,6 +42,7 @@
         const time = document.querySelector(".time")
         let score = 0;
         let timeCount = 10;
+        const startBtn = document.querySelector("#btn .start")
         
         writtenWordArray.push(firstWordArray[Math.floor(Math.random() * firstWordArray.length)]);
         
@@ -52,11 +56,17 @@
             if(timeCount === 0) {
                 clearInterval(start);
                 alert("GAME OVER");
+                // location.reload();
             } else {
                 timeCount -= 1;
             }
         };
         const start = setInterval(tick, 1000);
+
+        startBtn.addEventListener("click", startGame);
+        function startGame() {
+            startBtn.removeEventListener("click", startGame);
+        }
 
         word.addEventListener("keyup", function(e) {
             if(e.key === "Enter" || e.keyCode === 13) {
@@ -75,7 +85,7 @@
                         writtenWord.innerHTML = "";
                         writtenWordArray.forEach(function(item,index){
                         writtenWord.innerHTML += `<li>${item}</li>`;
-                        timeCount = 5;
+                        timeCount = 10;
                         });
                         word.value = "";
                         word.focus();
