@@ -10,6 +10,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;700;800;900&family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet" />
         <link rel="stylesheet" href="../css/reset.css" />
         <link rel="stylesheet" href="../css/layout.css" />
+        <script src="../js/axios.min.js"></script>
         <script src="../js/gsap/gsap.min.js"></script>
     </head>
     <body>
@@ -41,7 +42,7 @@
         const scoreTxt = document.querySelector(".score");
         const time = document.querySelector(".time")
         let score = 0;
-        let timeCount = 10;
+        // let timeCount = 10;
         const startBtn = document.querySelector("#btn .start")
         
         writtenWordArray.push(firstWordArray[Math.floor(Math.random() * firstWordArray.length)]);
@@ -50,18 +51,18 @@
             writtenWord.innerHTML += `<li>${item}</li>`
         })
 
-        time.innerHTML = "Time : " + timeCount;
-        const tick = () => {
-            time.innerHTML = "Time : " + timeCount;
-            if(timeCount === 0) {
-                clearInterval(start);
-                alert("GAME OVER");
-                // location.reload();
-            } else {
-                timeCount -= 1;
-            }
-        };
-        const start = setInterval(tick, 1000);
+        //time.innerHTML = "Time : " + timeCount;
+        // const tick = () => {
+        //     time.innerHTML = "Time : " + timeCount;
+        //     if(timeCount === 0) {
+        //         clearInterval(start);
+        //         //alert("GAME OVER");
+        //         // location.reload();
+        //     } else {
+        //         timeCount -= 1;
+        //     }
+        // };
+        // const start = setInterval(tick, 1000);
 
         startBtn.addEventListener("click", startGame);
         function startGame() {
@@ -79,34 +80,36 @@
                 const lastWord = writtenWordArray[writtenWordArray.length - 1];
                 const lastCher = lastWord.charAt(lastWord.length - 1);
                 const firstCher = word.value.charAt(0); // word에 입력한 첫번째 글자
-                if(firstCher === lastCher) {
-                    if(!writtenWordArray.includes(word.value)) {
+                const url = `https://opendict.korean.go.kr/api/search?key=698EAD84F27E9226FDC0949EF30A5D33&q=${word.value}&req_type=json&advanced=y&method=exact&pos=1`;
+                axios.get(url).then(function (res) {
+                        if(!writtenWordArray.includes(word.value) &&  firstCher === lastCher  &&  res.data.channel.total > 0) {
                         writtenWordArray.push(word.value);
                         writtenWord.innerHTML = "";
-                        writtenWordArray.forEach(function(item,index){
-                        writtenWord.innerHTML += `<li>${item}</li>`;
-                        timeCount = 10;
+                        writtenWordArray.forEach(function (item,index) {
+                            writtenWord.innerHTML += `<li>${item}</li>`;
+                            //timeCount = 10;
                         });
                         word.value = "";
                         word.focus();
                         score++;
                         scoreTxt.innerHTML = "Score : " + score;
+                        //timeCount = 10;
                     } else {
-                        word.value = "";
-                        word.focus();
-                        gsap.fromTo(word, { x: 100 }, { x: 0, ease:"elastic", duration: 0.5 });
-                    }
-                } else {
                     word.value = "";
                     word.focus();
                     gsap.fromTo(word, { x: 100 }, { x: 0, ease:"elastic", duration: 0.5 });
-                }
+                    }
+                });
             } 
         });
         scoreTxt.innerHTML = "Score : " + score;
         // const fluits = ["apple","banana","kiwi"];
         // console.log(fluits.includes("jamong"))
-
-
     </script>
+    <!-- <script>
+        axios.get("https://opendict.korean.go.kr/api/search?key=698EAD84F27E9226FDC0949EF30A5D33&q=호랑이&req_type=json")
+        .then(function(res){
+            console.log(res.data.channel);
+        });
+    </script> -->
 </html>
